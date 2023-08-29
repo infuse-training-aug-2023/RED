@@ -34,6 +34,17 @@ class MainDriver
     element.text
   end
 
+  # implicit wait
+  def set_implicit_wait(seconds = 10)
+    @driver.manage.timeouts.implicit_wait = seconds
+  end
+
+  # explicit wait
+  def wait_for_element(selector, value, timeout = 10)
+    wait = Selenium::WebDriver::Wait.new(timeout: timeout)
+    wait.until { @driver.find_element(how, what) }
+  end
+
   def close
     @driver.quit
   end
