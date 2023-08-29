@@ -8,6 +8,7 @@ main_driver = MainDriver.new($d)
 mouse_event = MouseEvent.new($d)
 keyboard_events = KeyboardEvents.new($d)
 web_finder = WebFinder.new($d)
+expected_email = "riyakumbhar2001@gmail.com"
 
 begin
     # Open a webpage
@@ -17,7 +18,6 @@ begin
     main_driver.maximize_window
 
     profile = web_finder.find_element(:id, 'account')
-    email = "riyakumbhar2001@gmail.com"
     mouse_event.click(profile)
 
     username = web_finder.find_element(:id, 'username')
@@ -31,8 +31,22 @@ begin
     account_setting = web_finder.find_element(:xpath, "/html/body/section[2]/div/div/div/nav/ul/li[3]/a")
     mouse_event.click(account_setting) 
 
+    email_element = web_finder.find_element(:id, 'account_email') # Adjust the locator according to your website
+    actual_email = email_element.attribute('value')
+
+    if actual_email == expected_email
+        puts "Login successful!"
+        return true
+    else
+        puts "Login failed: Expected email '#{expected_email}', but got '#{actual_email}'."
+        return false
+    end
+
     logoutButton = web_finder.find_element(:xpath, "/html/body/section[2]/div/div/div/nav/ul/li[6]/a")
     mouse_event.click(logoutButton)
+
+
+
 
   rescue StandardError => e
     puts "An error occurred: #{e.message}"
