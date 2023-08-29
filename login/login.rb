@@ -17,15 +17,19 @@ begin
     main_driver.maximize_window
 
     profile = web_finder.find_element(:id, 'account')
+    email = "riyakumbhar2001@gmail.com"
     mouse_event.click(profile)
 
     username = web_finder.find_element(:id, 'username')
     password = web_finder.find_element(:id, 'password')
     keyboard_events.input_text(username, 'riyakumbhar2001@gmail.com')
     keyboard_events.input_text(password, 'thisisadummypass')
-
+    
     loginButton = web_finder.find_element(:css, "button[value='Log in']")
     mouse_event.click(loginButton)
+    
+    account_setting = web_finder.find_element(:xpath, "/html/body/section[2]/div/div/div/nav/ul/li[3]/a")
+    mouse_event.click(account_setting) 
 
     logoutButton = web_finder.find_element(:xpath, "/html/body/section[2]/div/div/div/nav/ul/li[6]/a")
     mouse_event.click(logoutButton)
