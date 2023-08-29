@@ -42,7 +42,7 @@ class MainDriver
   # explicit wait
   def wait_for_element(selector, value, timeout = 10)
     wait = Selenium::WebDriver::Wait.new(timeout: timeout)
-    wait.until { @driver.find_element(how, what) }
+    wait.until { @driver.find_element(selector, value) }
   end
 
   def close
