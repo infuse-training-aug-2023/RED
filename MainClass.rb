@@ -49,7 +49,7 @@ class KeyboardEvents
         element.send_keys(text)
     end
 
-    def enter_key
+    def enter_key(element)
         element.send_keys(:return)
     end
 end
