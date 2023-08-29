@@ -1,13 +1,12 @@
 # mainDriver
-
 require 'selenium-webdriver'
+require_relative 'WebDriver'
+
 
 class MainDriver
   attr_reader :driver
-  
-  def initialize(browser: :chrome)
-    Selenium::WebDriver::Chrome::Service.driver_path = 'C:\Users\neera.yadav\Documents\BrowserDrivers\chromedriver-win64\chromedriver-win64\chromedriver.exe'
-    @driver = Selenium::WebDriver.for browser
+  def initialize(driver)
+    @driver = driver
   end
 
   def maximize_window
@@ -15,23 +14,63 @@ class MainDriver
   end
 
   def visit(url)
-    @driver.get url
+    @driver.get("https://google.com")
+  end
+  
+  def get_text(element)
+    element.text
   end
 
+  def sleep
+    sleep 5
+  end
+
+  def close
+    @driver.quit
+  end
+end
+
+class MouseEvent
+  attr_reader :driver
+
+    def initialize()
+        Selenium::WebDriver::Chrome::Service.driver_path = 'C:\Users\neera.yadav\Documents\BrowserDrivers\chromedriver-win64\chromedriver-win64\chromedriver.exe'
+        @driver = driver
+      end
+    def initialize
+        @driver = $d
+    end
+   
+  def click(element)
+    element.click
+    end
+end
+
+class KeyboardEvents
+    def initialize
+        @driver = $d
+    end
+    def input_text(element, text)
+        element.send_keys(text)
+    end
+
+    def enter_key
+        element.send_keys(:return)
+    end
+end
+
+# Web finders 
+
+class WebFinder
+    def initialize
+        @driver = $d
+    end
   def find_element(type, value)
     @driver.find_element(type, value)
   end
 
-  def click(element)
-    element.click
-  end
-
-  def input_text(element, text)
-    element.send_keys(text)
-  end
-
-  def get_text(element)
-    element.text
+  def find_elements(type, value)
+    @driver.find_elements(type, value)
   end
 
   # implicit wait
@@ -43,9 +82,5 @@ class MainDriver
   def wait_for_element(selector, value, timeout = 10)
     wait = Selenium::WebDriver::Wait.new(timeout: timeout)
     wait.until { @driver.find_element(selector, value) }
-  end
-
-  def close
-    @driver.quit
   end
 end
