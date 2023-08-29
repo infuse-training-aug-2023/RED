@@ -45,6 +45,7 @@ class KeyboardEvents
     def initialize(driver)
         @driver = driver
     end
+    
     def input_text(element, text)
         element.send_keys(text)
     end
@@ -78,4 +79,9 @@ class WebFinder
     wait = Selenium::WebDriver::Wait.new(timeout: timeout)
     wait.until { @driver.find_element(selector, value) }
   end
+
+    # Scroll to
+    def scroll_down(amount)
+        @driver.execute_script("window.scrollBy(0, #{amount});")
+    end
 end
