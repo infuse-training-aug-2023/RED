@@ -18,8 +18,8 @@ class MainDriver
     @driver.get url
   end
 
-  def find_element(how, what)
-    @driver.find_element(how, what)
+  def find_element(type, value)
+    @driver.find_element(type, value)
   end
 
   def click(element)
