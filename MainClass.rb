@@ -1,6 +1,5 @@
 # mainDriver
 require 'selenium-webdriver'
-require_relative 'WebDriver'
 
 
 class MainDriver
@@ -14,7 +13,7 @@ class MainDriver
   end
 
   def visit(url)
-    @driver.get("https://google.com")
+    @driver.get(url)
   end
   
   def get_text(element)
@@ -33,13 +32,9 @@ end
 class MouseEvent
   attr_reader :driver
 
-    def initialize()
-        Selenium::WebDriver::Chrome::Service.driver_path = 'C:\Users\neera.yadav\Documents\BrowserDrivers\chromedriver-win64\chromedriver-win64\chromedriver.exe'
-        @driver = driver
-      end
-    def initialize
-        @driver = $d
-    end
+  def initialize(driver)
+    @driver = driver
+  end
    
   def click(element)
     element.click
@@ -47,8 +42,8 @@ class MouseEvent
 end
 
 class KeyboardEvents
-    def initialize
-        @driver = $d
+    def initialize(driver)
+        @driver = driver
     end
     def input_text(element, text)
         element.send_keys(text)
@@ -62,9 +57,9 @@ end
 # Web finders 
 
 class WebFinder
-    def initialize
-        @driver = $d
-    end
+  def initialize(driver)
+    @driver = driver
+  end
   def find_element(type, value)
     @driver.find_element(type, value)
   end
