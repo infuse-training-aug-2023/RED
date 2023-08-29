@@ -5,9 +5,9 @@ require_relative "WebDriver"
 $d = Driver.new(browser: :chrome).instance_variable_get(:@driver)
 
 main_driver = MainDriver.new($d)
-mouse_event = MouseEvent.new
-keyboard_events = KeyboardEvents.new
-web_finder = WebFinder.new
+mouse_event = MouseEvent.new($d)
+keyboard_events = KeyboardEvents.new($d)
+web_finder = WebFinder.new($d)
 
 begin
     # Open a webpage
@@ -15,9 +15,11 @@ begin
   
     # Maximize the window
     main_driver.maximize_window
+
+    fname = web_finder.find_element(:name, 'firstname')
   
     # Print the page title
-    puts "Page title: #{main_driver.driver.title}"
+    puts fname
   rescue StandardError => e
     puts "An error occurred: #{e.message}"
   ensure
