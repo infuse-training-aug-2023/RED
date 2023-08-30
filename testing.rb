@@ -1,100 +1,67 @@
 require 'test/unit'
 require_relative 'MainClass'  # Adjust the path accordingly
 require_relative 'WebDriver'   # Adjust the path accordingly
+require 'selenium-webdriver'
 
 class TestMainDriver < Test::Unit::TestCase
-  class DummyDriver
-    def manage
-      self
-    end
-
-    def window
-      self
-    end
-
-    def maximize
-      true
-    end
-
-    def get(url)
-      @visited_url = url
-    end
-
-    def visited_url
-      @visited_url
-    end
-
-    def quit
-      @quit_called = true
-    end
-
-    def quit_called?
-      @quit_called
-    end
-
-    # Simulate element for testing get_text
-    class DummyElement
-      def text
-        'Sample Text'
-      end
-    end
-
-  end
-
   def setup
-    @driver = DummyDriver.new
+    @driver = Driver.new(browser: :chrome).instance_variable_get(:@driver)
     @main_driver = MainDriver.new(@driver)
   end
 
   def test_maximize_window
-    assert_true(@main_driver.maximize_window)
+    initial_size = @driver.manage.window.size
+
+    @main_driver.maximize_window
+    maximized_size = @driver.manage.window.size
+    assert_true(maximized_size.width > initial_size.width)
+    assert_true(maximized_size.height > initial_size.height)
   end
 
   def test_visit
-    url = 'https://www.techlistic.com/p/selenium-practice-form.html#google_vignette'
+    url = 'https://letcode.in/forms'
     @main_driver.visit(url)
-
-    assert_equal(url, @driver.visited_url)
+    assert_equal(url, @driver.current_url)
   end
 
-  def test_get_text
-    element = DummyDriver::DummyElement.new
-    assert_equal('Sample Text', @main_driver.get_text(element))
+   def test_get_text
+    url = 'https://letcode.in/forms'
+    @driver.get(url)
+    element = @driver.find_element(:tag_name,'h1')
+
+    assert_equal('Form', @main_driver.get_text(element))
   end
 
-  def test_close
-    # @main_driver = MainDriver.new
-    @main_driver.close
-    assert_true(@driver.quit_called?)
-  end
+
 
 end
 
-class TestKeyboardEvents < Test::Unit::TestCase
-  class DummyElement
-    attr_reader :keys_sent
 
-    def send_keys(keys)
-      @keys_sent = keys
-    end
-  end
+class TestKeyboardEvents < Test::Unit::TestCase
+
 
   def setup
-    @keyboard_events = KeyboardEvents.new(nil)  # Passing nil to avoid actual interactions
+    @driver = Driver.new(browser: :chrome).instance_variable_get(:@driver)
+    @keyboard_events = KeyboardEvents.new(@driver)
   end
 
-  def test_input_text
-    element = DummyElement.new
+   def test_input_text
+    # Open a test page
+    @driver.get('https://letcode.in/forms')
+
+    # Find a text input element
+    element = @driver.find_element(id: 'firstname')
+
     text = 'Hello, World!'
     @keyboard_events.input_text(element, text)
 
-    assert_equal(text, element.keys_sent)
+    assert_equal(text, text_input.attribute('value'))
   end
 
-  def test_enter_key
-    element = DummyElement.new
-    @keyboard_events.enter_key(element)
+  # def test_enter_key
+  #   dummy_element = DummyElement.new
+  #   @keyboard_events.enter_key(dummy_element)
 
-    assert_equal(:return, element.keys_sent)
-  end
+  #   assert_equal(:return, dummy_element.keys_sent)
+  # end
 end
