@@ -5,7 +5,7 @@ require_relative '../WebDriver'
 $d = Driver.new(browser: :chrome).instance_variable_get(:@driver)
 
 main_driver = MainDriver.new($d)
-mouse_event = MouseEvent.new($d)
+mouse_event = MouseEvent.new($d) 
 keyboard_events = KeyboardEvents.new($d)
 web_finder = WebFinder.new($d)
 

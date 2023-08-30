@@ -84,4 +84,10 @@ class WebFinder
     def scroll_down(amount)
         @driver.execute_script("window.scrollBy(0, #{amount});")
     end
+
+    def scroll_to_element(element)
+      @driver.execute_script('arguments[0].scrollIntoView(false);', element)
+    end
+
+
 end
