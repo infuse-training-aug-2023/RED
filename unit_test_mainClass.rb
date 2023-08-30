@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative 'mainClass'
+require_relative 'MainClass'
 
 class TestMainDriver < Test::Unit::TestCase
   def setup
