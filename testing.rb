@@ -32,8 +32,6 @@ class TestMainDriver < Test::Unit::TestCase
     assert_equal('Form', @main_driver.get_text(element))
   end
 
-
-
 end
 
 
@@ -43,25 +41,34 @@ class TestKeyboardEvents < Test::Unit::TestCase
   def setup
     @driver = Driver.new(browser: :chrome).instance_variable_get(:@driver)
     @keyboard_events = KeyboardEvents.new(@driver)
+    @webfinder = WebFinder.new(@driver)
+    @mouse_event = MouseEvent.new(@driver)
+    @main_driver = MainDriver.new(@driver)
   end
 
-   def test_input_text
-    # Open a test page
-    @driver.get('https://letcode.in/forms')
+   class DummyElement
+    attr_reader :keys_sent
 
-    # Find a text input element
-    element = @driver.find_element(id: 'firstname')
-
-    text = 'Hello, World!'
-    @keyboard_events.input_text(element, text)
-
-    assert_equal(text, text_input.attribute('value'))
+    def send_keys(keys)
+      @keys_sent = keys
+    end
   end
 
-  # def test_enter_key
-  #   dummy_element = DummyElement.new
-  #   @keyboard_events.enter_key(dummy_element)
+  def test_send_keys_to_input_field
+    text = "Anup"
+    url = 'https://letcode.in/forms'
+    @main_driver.visit(url)
+    firstname = @webfinder.find_element(:id, 'firstname')
+    @keyboard_events.input_text(firstname, text)
+    actual_output = firstname.attribute('value')
+    assert_equal(text, actual_output)
+  end
 
-  #   assert_equal(:return, dummy_element.keys_sent)
-  # end
+
+  def test_enter_key
+    dummy_element = DummyElement.new
+    @keyboard_events.enter_key(dummy_element)
+
+    assert_equal(:return, dummy_element.keys_sent)
+  end
 end

@@ -47,7 +47,7 @@ class KeyboardEvents
     end
 
     def input_text(element, text)
-        element.send_keys(text)
+        element.send_keys text
     end
 
     def enter_key(element)
