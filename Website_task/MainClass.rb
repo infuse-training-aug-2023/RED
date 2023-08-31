@@ -1,4 +1,3 @@
-# mainDriver
 require 'selenium-webdriver'
 
 
@@ -15,7 +14,7 @@ class MainDriver
   def visit(url)
     @driver.get(url)
   end
-
+  
   def get_text(element)
     element.text
   end
@@ -35,7 +34,7 @@ class MouseEvent
   def initialize(driver)
     @driver = driver
   end
-
+   
   def click(element)
     element.click
     end
@@ -45,7 +44,6 @@ class KeyboardEvents
     def initialize(driver)
         @driver = driver
     end
-
     def input_text(element, text)
         element.send_keys(text)
     end
@@ -55,7 +53,7 @@ class KeyboardEvents
     end
 end
 
-# Web finders
+# Web finders 
 
 class WebFinder
   def initialize(driver)
@@ -80,8 +78,8 @@ class WebFinder
     wait.until { @driver.find_element(selector, value) }
   end
 
-    # Scroll to
-    def scroll_down(amount)
-        @driver.execute_script("window.scrollBy(0, #{amount});")
-    end
+  def scroll_down(element)
+    @driver.execute_script('arguments[0].scrollIntoView(false);',element)
+  end
+  
 end
